@@ -12,6 +12,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
+import Simple from "./components/simple-1/simple-1";
+import Simple2 from "./components/simple-2/simple-2";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,51 +45,77 @@ const drawerWidth = 240;
 export default function App() {
   const classes = useStyles();
 
+  const routes = [
+    {
+      path: "/",
+      exact: true,
+      content: () => <h1>Introduction</h1>,
+    },
+    {
+      path: "/simple1",
+      sidebar: "Simple",
+      component: Simple,
+    },
+    {
+      path: "/simple2",
+      sidebar: "Simple 2",
+      component: Simple2,
+    },
+  ];
+
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            Permanent drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        anchor="left"
-      >
-        <div className={classes.toolbar} />
-        <Divider />
-        <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-      </main>
+      <Router>
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <Typography variant="h6" noWrap>
+              <Link to="/">RxJS Experiments</Link>
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          anchor="left"
+        >
+          <div className={classes.toolbar} />
+          <Divider />
+          <List>
+            {routes.map(
+              (route, index) =>
+                route.sidebar && (
+                  <Link to={route.path} key={index}>
+                    <ListItem button key={index}>
+                      <ListItemIcon>
+                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={route.sidebar} />
+                    </ListItem>
+                  </Link>
+                )
+            )}
+          </List>
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Switch>
+            {routes.map((route) => (
+              <Route
+                path={route.path}
+                key={route.path}
+                exact={route.exact}
+                component={route.component}
+              >
+                {route.content && <route.content />}
+              </Route>
+            ))}
+          </Switch>
+        </main>
+      </Router>
     </div>
   );
 }

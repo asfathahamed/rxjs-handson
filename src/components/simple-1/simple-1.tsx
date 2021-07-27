@@ -1,4 +1,4 @@
 const Simple = () => {
-  return <h1>Simple App</h1>;
+  return <h1 key="simple">Simple App</h1>;
 };
 export default Simple;

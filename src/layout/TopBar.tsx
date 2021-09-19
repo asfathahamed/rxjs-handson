@@ -11,6 +11,14 @@ const useStyles = makeStyles((theme) => ({
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
   },
+  brand:{
+    color:'#FFF',
+    textDecoration:'none',
+    "&:hover":{
+      color:'#999999',
+      textDecorationLine:'underline',
+    }
+  }
 }));
 
 export const TopBar = () => {
@@ -19,7 +27,7 @@ export const TopBar = () => {
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
         <Typography variant="h6" noWrap>
-          <Link to="/">RxJS Experiments</Link>
+          <Link to="/" className={classes.brand}>RxJS Experiments</Link>
         </Typography>
       </Toolbar>
     </AppBar>

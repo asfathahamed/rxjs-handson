@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
+  sidebarText:{
+    color:'#000080',
+    textDecoration:'none',
+  },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
 }));
@@ -48,7 +52,7 @@ export const SideBar = ({ routes }: MyProps) => {
         {routes.map(
           (route: RouteConfig, index: number) =>
             route.sidebar && (
-              <Link to={route.path} key={index}>
+              <Link to={route.path} className={classes.sidebarText} key={index}>
                 <ListItem button key={index}>
                   <ListItemIcon>
                     {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
